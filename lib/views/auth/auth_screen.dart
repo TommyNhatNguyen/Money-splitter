@@ -1,5 +1,7 @@
+import 'package:ecommerce/config/app_routes.dart';
 import 'package:ecommerce/core/assets/app_images.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class AuthScreen extends StatelessWidget {
   const AuthScreen({super.key});
@@ -27,7 +29,9 @@ class AuthScreen extends StatelessWidget {
                     SizedBox(
                       width: double.infinity,
                       child: FilledButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          context.push(AppRoutes.register);
+                        },
                         child: const Text(
                           "Sign up",
                           style: TextStyle(fontWeight: FontWeight.bold),
