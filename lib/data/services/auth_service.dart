@@ -1,4 +1,8 @@
+import 'package:ecommerce/core/utils/error.dart';
+import 'package:ecommerce/data/models/payloads/auth_login_payload.dart';
+import 'package:ecommerce/data/models/payloads/auth_register_payload.dart';
 import 'package:ecommerce/data/repositories/auth_repository.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 // Repo return json
 // Output: Actual model (class model)
@@ -12,20 +16,44 @@ class AuthService implements AuthRepositoryImplementation {
   AuthService({AuthRepository? repo}) : repo = repo ?? AuthRepository();
 
   @override
-  Future<void> login() {
-    // TODO: implement login
-    throw UnimplementedError();
-  }
-
-  @override
   Future<void> logout() {
-    // TODO: implement logout
-    throw UnimplementedError();
+    try {
+      final data = repo.logout();
+      return data;
+    } catch (e) {
+      throw ServiceError(
+        module: 'Authetication',
+        message: e.toString(),
+        functionName: 'Logout',
+      ).toString();
+    }
   }
 
   @override
-  Future<void> register() {
-    // TODO: implement register
-    throw UnimplementedError();
+  Future<UserCredential> register(AuthRegisterPayload payload) async {
+    try {
+      final data = repo.register(payload);
+      return data;
+    } catch (e) {
+      throw ServiceError(
+        module: 'Authetication',
+        message: e.toString(),
+        functionName: 'Register',
+      ).toString();
+    }
+  }
+
+  @override
+  Future<UserCredential> login(AuthLoginPayload payload) {
+    try {
+      final data = repo.login(payload);
+      return data;
+    } catch (e) {
+      throw ServiceError(
+        module: 'Authetication',
+        message: e.toString(),
+        functionName: 'Login',
+      ).toString();
+    }
   }
 }
