@@ -1,7 +1,9 @@
+import 'package:ecommerce/blocs/auth/auth_bloc.dart';
 import 'package:ecommerce/config/app_routes.dart';
 import 'package:ecommerce/views/auth/auth_screen.dart';
 import 'package:ecommerce/views/auth/register_screen.dart';
 import 'package:ecommerce/views/home/home_screen.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 GoRouter routerConfigInit() {
@@ -34,7 +36,12 @@ GoRouter routerConfigInit() {
       GoRoute(
         path: AppRoutes.register,
         name: AppRoutes.register,
-        builder: (context, state) => const RegisterScreen(),
+        builder: (context, state) {
+          return BlocProvider(
+            create: (context) => AuthBloc(),
+            child: const RegisterScreen(),
+          );
+        },
       ),
     ],
   );

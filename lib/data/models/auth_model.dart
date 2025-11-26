@@ -1,19 +1,20 @@
 import 'package:ecommerce/core/models/base_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthModel extends BaseModel {
-  AuthModel();
+  final UserCredential? userCredential;
 
-  factory AuthModel.fromJson() {
-    return AuthModel();
+  AuthModel({this.userCredential});
+
+  factory AuthModel.fromJson(Map<String, dynamic> json) {
+    return AuthModel(userCredential: json['userCredential']);
   }
 
   @override
   Map<String, dynamic> toJson() {
-    // TODO: implement toJson
-    throw UnimplementedError();
+    return {'userCredential': userCredential};
   }
 
   @override
-  // TODO: implement props
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [userCredential];
 }
