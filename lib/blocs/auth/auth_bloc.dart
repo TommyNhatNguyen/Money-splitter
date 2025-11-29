@@ -26,6 +26,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     on<AuthRegistrationPressed>(_register);
     on<AuthStateChanged>(_authStateChange);
+    on<AuthLoginPressed>(_login);
   }
 
   void _authStateChange(AuthStateChanged event, Emitter<AuthState> emit) async {
@@ -47,6 +48,36 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(state.copyWith(requestStatus: RequestStatus.loading));
     try {
       final data = await _authService.register(event.payload);
+      if (data.user != null) {
+        emit(
+          state.copyWith(
+            requestStatus: RequestStatus.completed,
+            status: AuthStatus.authenticated,
+            user: data.user,
+            error: null,
+          ),
+        );
+      } else {
+        emit(
+          state.copyWith(
+            requestStatus: RequestStatus.completed,
+            status: AuthStatus.unauthenticated,
+            user: data.user,
+            error: null,
+          ),
+        );
+      }
+    } catch (e) {
+      emit(
+        state.copyWith(requestStatus: RequestStatus.error, error: e.toString()),
+      );
+    }
+  }
+
+  void _login(AuthLoginPressed event, Emitter<AuthState> emit) async {
+    emit(state.copyWith(requestStatus: RequestStatus.loading));
+    try {
+      final data = await _authService.login(event.payload);
       if (data.user != null) {
         emit(
           state.copyWith(

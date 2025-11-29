@@ -42,7 +42,9 @@ class AuthScreen extends StatelessWidget {
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          context.push(AppRoutes.login);
+                        },
                         child: const Text(
                           "Log in",
                           style: TextStyle(fontWeight: FontWeight.bold),

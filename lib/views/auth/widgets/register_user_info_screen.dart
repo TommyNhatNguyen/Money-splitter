@@ -3,6 +3,7 @@ import 'package:ecommerce/blocs/user/user_event.dart';
 import 'package:ecommerce/blocs/user/user_state.dart';
 import 'package:ecommerce/config/app_routes.dart';
 import 'package:ecommerce/core/blocs/base_state.dart';
+import 'package:ecommerce/core/widgets/base_button.dart';
 import 'package:ecommerce/core/widgets/toast.dart';
 import 'package:ecommerce/data/models/payloads/auth_register_payload.dart';
 import 'package:ecommerce/data/models/payloads/user_create_payload.dart';
@@ -104,17 +105,9 @@ class _RegisterUserInfoScreenState extends State<RegisterUserInfoScreen> {
                       keyboardType: TextInputType.phone,
                     ),
                     const SizedBox(height: 24),
-                    Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.symmetric(vertical: 8),
-                      child: FilledButton(
-                        onPressed: isLoading ? null : () => onSubmit(context),
-                        child: isLoading
-                            ? const CircularProgressIndicator(
-                                color: Colors.white,
-                              )
-                            : Text("Done"),
-                      ),
+                    LoadingFilledButton(
+                      isLoading: isLoading,
+                      child: Text("Done"),
                     ),
                   ],
                 ),

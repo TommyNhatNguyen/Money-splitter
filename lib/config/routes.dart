@@ -3,6 +3,7 @@ import 'package:ecommerce/blocs/user/user_bloc.dart';
 import 'package:ecommerce/config/app_routes.dart';
 import 'package:ecommerce/data/models/payloads/auth_register_payload.dart';
 import 'package:ecommerce/views/auth/auth_screen.dart';
+import 'package:ecommerce/views/auth/login_screen.dart';
 import 'package:ecommerce/views/auth/register_screen.dart';
 import 'package:ecommerce/views/auth/widgets/register_user_info_screen.dart';
 import 'package:ecommerce/views/home/home_screen.dart';
@@ -33,6 +34,11 @@ GoRouter routerConfigInit() {
         path: AppRoutes.auth,
         name: AppRoutes.auth,
         builder: (context, state) => const AuthScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.login,
+        name: AppRoutes.login,
+        builder: (context, state) => const LoginScreen(),
       ),
       GoRoute(
         path: AppRoutes.register,
