@@ -1,43 +1,27 @@
 import 'package:ecommerce/blocs/auth/auth_bloc.dart';
 import 'package:ecommerce/blocs/auth/auth_state.dart';
-import 'package:ecommerce/config/app_routes.dart';
 import 'package:ecommerce/core/blocs/base_state.dart';
 import 'package:ecommerce/data/models/payloads/auth_register_payload.dart';
-import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 
-class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({super.key});
+class RegisterUserInfoScreen extends StatefulWidget {
+  const RegisterUserInfoScreen({super.key, required this.payload});
+
+  final AuthRegisterPayload payload;
 
   @override
-  State<RegisterScreen> createState() => _RegisterScreenState();
+  _RegisterUserInfoScreenState createState() => _RegisterUserInfoScreenState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> {
+class _RegisterUserInfoScreenState extends State<RegisterUserInfoScreen> {
   final formKey = GlobalKey<FormState>();
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
-  bool isShowPassword = false;
-
-  void toggleShowPassword() {
-    setState(() {
-      isShowPassword = !isShowPassword;
-    });
-  }
+  final _fullNameController = TextEditingController();
+  final _phoneNumberController = TextEditingController();
 
   void onSubmit(BuildContext context) {
-    final isValid = formKey.currentState?.validate() ?? false;
-    if (!isValid) {
-      return;
-    } else {
-      final AuthRegisterPayload payload = AuthRegisterPayload(
-        email: _emailController.text,
-        password: _passwordController.text,
-      );
-      context.pushNamed(AppRoutes.registerUserInfo, extra: payload);
-    }
+    
+    // authBloc.add(AuthRegistrationPressed(payload: payload));
   }
 
   @override
@@ -69,45 +53,31 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   const SizedBox(height: 24),
                   TextFormField(
                     autofocus: true,
-                    controller: _emailController,
+                    controller: _fullNameController,
                     decoration: InputDecoration(
-                      labelText: "Email address",
-                      hintText: "Enter email",
+                      labelText: "Full name",
+                      hintText: "Enter full name",
                     ),
                     validator: (value) {
-                      final isNotValid =
-                          value == null ||
-                          value.isEmpty ||
-                          !EmailValidator.validate(value);
+                      final isNotValid = value == null || value.isEmpty;
                       if (isNotValid) {
-                        return "Please enter a valid email address";
+                        return "Full name can't be null";
                       }
                       return null;
                     },
                   ),
                   const SizedBox(height: 16),
                   TextFormField(
-                    obscureText: !isShowPassword,
-                    controller: _passwordController,
-                    decoration: InputDecoration(
-                      labelText: "Password",
-                      hintText: "Enter password",
-                      suffixIcon: IconButton(
-                        onPressed: toggleShowPassword,
-                        icon: isShowPassword
-                            ? Icon(Icons.visibility_off)
-                            : Icon(Icons.visibility),
-                      ),
-                    ),
+                    controller: _phoneNumberController,
+                    decoration: InputDecoration(hintText: "Enter phone number"),
                     validator: (value) {
                       final isNotValid = value == null || value.isEmpty;
                       if (isNotValid) {
-                        return "Please enter a valid password";
-                      } else if (value.length <= 6) {
-                        return "Password must have more than 6 characters";
+                        return "Please enter a valid phone number";
                       }
                       return null;
                     },
+                    keyboardType: TextInputType.phone,
                   ),
                   const SizedBox(height: 24),
                   Container(
@@ -117,7 +87,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       onPressed: () => isLoading ? null : onSubmit(context),
                       child: isLoading
                           ? const CircularProgressIndicator(color: Colors.white)
-                          : Text("Next"),
+                          : Text("Done"),
                     ),
                   ),
                 ],

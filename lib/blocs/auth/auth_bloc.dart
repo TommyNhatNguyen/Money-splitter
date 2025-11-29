@@ -15,7 +15,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(state.copyWith(requestStatus: RequestStatus.loading));
     try {
       final data = await _authService.register(event.payload);
-      if (data.user?.getIdToken() != null) {
+      if (data.user != null) {
         emit(
           state.copyWith(
             requestStatus: RequestStatus.completed,

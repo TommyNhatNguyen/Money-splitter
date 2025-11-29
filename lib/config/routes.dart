@@ -1,25 +1,25 @@
 import 'package:ecommerce/blocs/auth/auth_bloc.dart';
 import 'package:ecommerce/config/app_routes.dart';
+import 'package:ecommerce/data/models/payloads/auth_register_payload.dart';
 import 'package:ecommerce/views/auth/auth_screen.dart';
 import 'package:ecommerce/views/auth/register_screen.dart';
+import 'package:ecommerce/views/auth/widgets/register_user_info_screen.dart';
 import 'package:ecommerce/views/home/home_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 GoRouter routerConfigInit() {
   final GoRouter router = GoRouter(
-    initialLocation: AppRoutes.register,
+    initialLocation: AppRoutes.home,
     redirect: (context, state) {
-      // final List<String> publicRoutes = [AppRoutes.auth, AppRoutes.home];
-      // final isAuthenticated = false;
-      // final isPublicRoutes = publicRoutes.contains(state.uri.toString());
-      // print(isPublicRoutes);
-      // if (isAuthenticated) {
-      //   return AppRoutes.home;
-      // }
-      // if (!isAuthenticated && state.uri.toString() == AppRoutes.home) {
-      //   return AppRoutes.auth;
-      // }
+      AuthBloc authBloc = context.read<AuthBloc>();
+      final isAuthenticated = authBloc.state.isAuthenticated;
+      if (isAuthenticated) {
+        return AppRoutes.home;
+      }
+      if (!isAuthenticated && state.uri.toString() == AppRoutes.home) {
+        return AppRoutes.auth;
+      }
       return state.fullPath;
     },
     routes: [
@@ -36,12 +36,18 @@ GoRouter routerConfigInit() {
       GoRoute(
         path: AppRoutes.register,
         name: AppRoutes.register,
-        builder: (context, state) {
-          return BlocProvider(
-            create: (context) => AuthBloc(),
-            child: const RegisterScreen(),
-          );
-        },
+        builder: (context, state) => const RegisterScreen(),
+        routes: [
+          GoRoute(
+            path: AppRoutes.registerUserInfo,
+            name: AppRoutes.registerUserInfo,
+            builder: (context, state) {
+              final AuthRegisterPayload payload =
+                  state.extra as AuthRegisterPayload;
+              return RegisterUserInfoScreen(payload: payload);
+            },
+          ),
+        ],
       ),
     ],
   );
