@@ -1,5 +1,6 @@
 import 'package:ecommerce/core/utils/error.dart';
 import 'package:ecommerce/data/models/payloads/user_create_payload.dart';
+import 'package:ecommerce/data/models/user_model.dart';
 import 'package:ecommerce/data/repositories/user_repository.dart';
 import 'package:ecommerce/data/services/auth_service.dart';
 
@@ -11,11 +12,18 @@ class UserService implements UserRepositoryImplementation {
       _authService = authService ?? AuthService();
 
   @override
-  Future<void> create(UserCreatePayload payload) async {
+  Future<UserModel> create(UserCreatePayload payload) async {
     try {
       final authData = await _authService.register(payload.authPayload);
-      print(authData);
-      await _repo.create(payload);
+      final data = await _repo.create(
+        UserCreatePayload(
+          id: authData.user?.uid,
+          username: payload.username,
+          usernameNormalized: payload.usernameNormalized,
+          authPayload: payload.authPayload,
+        ),
+      );
+      return data;
     } catch (e) {
       throw ServiceError(
         module: 'User',

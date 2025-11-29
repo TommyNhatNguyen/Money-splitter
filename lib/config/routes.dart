@@ -1,4 +1,5 @@
 import 'package:ecommerce/blocs/auth/auth_bloc.dart';
+import 'package:ecommerce/blocs/user/user_bloc.dart';
 import 'package:ecommerce/config/app_routes.dart';
 import 'package:ecommerce/data/models/payloads/auth_register_payload.dart';
 import 'package:ecommerce/views/auth/auth_screen.dart';
@@ -44,7 +45,10 @@ GoRouter routerConfigInit() {
             builder: (context, state) {
               final AuthRegisterPayload payload =
                   state.extra as AuthRegisterPayload;
-              return RegisterUserInfoScreen(payload: payload);
+              return BlocProvider(
+                create: (context) => UserBloc(),
+                child: RegisterUserInfoScreen(authPayload: payload),
+              );
             },
           ),
         ],

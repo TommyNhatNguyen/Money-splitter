@@ -2,6 +2,7 @@ import 'package:ecommerce/core/models/base_model.dart';
 import 'package:ecommerce/data/models/payloads/auth_register_payload.dart';
 
 class UserCreatePayload extends BaseModel {
+  final String? id;
   final String username;
   final String usernameNormalized;
   final String? phone;
@@ -9,6 +10,7 @@ class UserCreatePayload extends BaseModel {
   final AuthRegisterPayload authPayload;
 
   UserCreatePayload({
+    this.id,
     required this.username,
     required this.usernameNormalized,
     this.phone,
@@ -19,6 +21,7 @@ class UserCreatePayload extends BaseModel {
   @override
   Map<String, dynamic> toJson() {
     return {
+      'id': id,
       'username': username,
       'usernameNormalized': usernameNormalized,
       'phone': phone,
@@ -28,6 +31,7 @@ class UserCreatePayload extends BaseModel {
 
   @override
   List<Object?> get props => [
+    id,
     username,
     usernameNormalized,
     phone,

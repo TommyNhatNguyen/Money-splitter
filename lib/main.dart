@@ -1,4 +1,5 @@
 import 'package:ecommerce/blocs/auth/auth_bloc.dart';
+import 'package:ecommerce/blocs/user/user_bloc.dart';
 import 'package:ecommerce/config/routes.dart';
 import 'package:ecommerce/core/themes/app_theme.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -12,7 +13,10 @@ void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(
     MultiBlocProvider(
-      providers: [BlocProvider(create: (_) => AuthBloc())],
+      providers: [
+        BlocProvider(create: (_) => AuthBloc()),
+        BlocProvider(create: (_) => UserBloc()),
+      ],
       child: const MainApp(),
     ),
   );

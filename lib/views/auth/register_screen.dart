@@ -42,20 +42,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AuthBloc, AuthState>(
-      listener: (context, state) {
-        final isAuthenticated =
-            state.requestStatus == RequestStatus.completed &&
-            state.isAuthenticated;
-        if (isAuthenticated) {
-          // context.push(AppRoutes.registerUserInfo);
-          // Toast.show(
-          //   context: context,
-          //   message: "Register successfully",
-          //   type: ToastType.success,
-          // );
-        }
-      },
+    return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
         final isLoading = state.requestStatus == RequestStatus.loading;
         return Scaffold(
